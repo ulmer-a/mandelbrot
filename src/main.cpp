@@ -3,8 +3,8 @@
 #include <stdlib.h>
 
 #include <GL/glew.h>
-#include <glm/ext/matrix_clip_space.hpp>
 #include <GLFW/glfw3.h>
+#include <glm/ext/matrix_clip_space.hpp>
 
 #define OPENGL_MIN_VERSION_MAJ 2
 #define OPENGL_MIN_VERSION_MIN 0
@@ -25,7 +25,7 @@ static GLFWwindow* setupGlfw(size_t width, size_t height)
   glfwSetErrorCallback(glfw_error);
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, OPENGL_MIN_VERSION_MAJ);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, OPENGL_MIN_VERSION_MIN);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, OPENGL_MIN_VERSION_MIN);
 
   GLFWwindow* window = glfwCreateWindow(width, height,
                           "ULMER OpenGL fractal", nullptr, nullptr);
@@ -35,6 +35,7 @@ static GLFWwindow* setupGlfw(size_t width, size_t height)
     exit(1);
   }
 
+  glfwMakeContextCurrent(window);
   return window;
 }
 
@@ -60,9 +61,16 @@ int main(int argc, char* argv[])
     return 1;
   }
 
-  glewInit();
 
   GLFWwindow* window = setupGlfw(width, height);
+
+  GLenum err;
+  if ((err = glewInit()) != GLEW_OK)
+  {
+    fprintf(stderr, "error: glew: %s\n", glewGetErrorString(err));
+    exit(1);
+  }
+
   while (!glfwWindowShouldClose(window))
   {
 
