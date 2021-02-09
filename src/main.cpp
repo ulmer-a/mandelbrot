@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "GlfwWindow.h"
+#include "FractalRenderer.h"
 #include "FractalCmdLine.h"
 
 int main(int argc, char* argv[])
@@ -25,16 +26,13 @@ int main(int argc, char* argv[])
     return 1;
   }
 
-  GlfwWindow::prepare();
-  {
-    GlfwWindow window(width, height, []() {
-
-
-
-    });
-    window.exec();
-  }
-
-  GlfwWindow::destroy();
+  FractalRenderer fractal;
+  GlfwWindow window(width, height, [&fractal]() {
+    fractal.draw();
+  });
+  fractal.setup();
+  glClearColor(1.0, 0.0, 0.0, 1.0);
+  glClear(GL_COLOR_BUFFER_BIT);
+  window.exec();
   return 0;
 }

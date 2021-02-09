@@ -3,14 +3,21 @@
 #include <cstdlib>
 #include <cstdio>
 
+
+
 GlfwWindow::GlfwWindow(size_t width, size_t height,
                        std::function<void()> loopHandler,
                        const char *title,
                        int glMajorVersion, int glMinorVersion)
-  : m_loopHandler(loopHandler)
+  : m_closed(false)
+  , m_loopHandler(loopHandler)
 {
+  prepare();
+
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, glMajorVersion);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, glMinorVersion);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+  glError();
 
   m_window = glfwCreateWindow(width, height,
                           title, nullptr, nullptr);
@@ -28,16 +35,24 @@ GlfwWindow::GlfwWindow(size_t width, size_t height,
     fprintf(stderr, "error: glew: %s\n", glewGetErrorString(err));
     exit(1);
   }
+  glError()
 }
 
 GlfwWindow::~GlfwWindow()
 {
-  glfwDestroyWindow(m_window);
+  if (!m_closed)
+    close();
+  destroy();
 }
 
 void GlfwWindow::bind()
 {
   glfwMakeContextCurrent(m_window);
+}
+
+void GlfwWindow::close()
+{
+  glfwDestroyWindow(m_window);
 }
 
 void GlfwWindow::exec()
