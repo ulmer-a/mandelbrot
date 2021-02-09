@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 
+#include <GL/glew.h>
 #include <glm/ext/matrix_clip_space.hpp>
 #include <GLFW/glfw3.h>
 
@@ -13,7 +14,7 @@ static void glfw_error(int error, const char* description)
   fprintf(stderr, "error: glfw: %s\n", description);
 }
 
-static GLFWwindow* setupGlfw()
+static GLFWwindow* setupGlfw(size_t width, size_t height)
 {
   if (!glfwInit())
   {
@@ -26,7 +27,7 @@ static GLFWwindow* setupGlfw()
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, OPENGL_MIN_VERSION_MAJ);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, OPENGL_MIN_VERSION_MIN);
 
-  GLFWwindow* window = glfwCreateWindow(windowWidth, windowHeight,
+  GLFWwindow* window = glfwCreateWindow(width, height,
                           "ULMER OpenGL fractal", nullptr, nullptr);
   if (!window)
   {
@@ -40,8 +41,7 @@ static GLFWwindow* setupGlfw()
 int main(int argc, char* argv[])
 {
   Fractal::FractalCmdLine cmdLineHandler {argc, argv};
-
-  auto viewportProjection { glm::ortho(-2.0, 1.0, -1.0, 1.0) };
+  size_t width = 800, height = 600;
 
   cmdLineHandler.handleHelpText([&cmdLineHandler](){
     cmdLineHandler.printArgumentChoices();
@@ -60,8 +60,10 @@ int main(int argc, char* argv[])
     return 1;
   }
 
-  GLFWwindow* window = setupGlfw();
-  while (!glfwWindowShouldClose())
+  glewInit();
+
+  GLFWwindow* window = setupGlfw(width, height);
+  while (!glfwWindowShouldClose(window))
   {
 
   }

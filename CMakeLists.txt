@@ -38,7 +38,7 @@ set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/lib/glew/build/cmake)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/lib/glew)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/lib/cmdline)
 
 file(GLOB FRAC_HEADERS "src/*.h")
@@ -50,7 +50,7 @@ target_compile_definitions(fractal PRIVATE
     FRACTAL_IMPL
 )
 
-target_link_libraries(fractal cmdline glfw glew_s)
+target_link_libraries(fractal cmdline glfw libglew_static)
 target_include_directories(fractal PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/lib/cmdline/source
     ${CMAKE_CURRENT_SOURCE_DIR}/lib/glm
