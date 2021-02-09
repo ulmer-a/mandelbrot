@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.14)
 project(FractalRenderer VERSION 1.0)
 message(STATUS "${CMAKE_PROJECT_NAME} v${CMAKE_PROJECT_VERSION}")
 
+find_package(OpenGL REQUIRED)
+
 # Default build type: Release
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "")
     set(CMAKE_BUILD_TYPE "Release")
@@ -31,7 +33,13 @@ elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
     add_compile_definitions(ENGINE_OS_MAC_OS=1)
 endif()
 
-add_subdirectory(lib/cmdline)
+
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/lib/glew/build/cmake)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/lib/cmdline)
 
 file(GLOB FRAC_HEADERS "src/*.h")
 file(GLOB FRAC_SOURCES "src/*.cpp")
@@ -42,7 +50,10 @@ target_compile_definitions(fractal PRIVATE
     FRACTAL_IMPL
 )
 
-target_link_libraries(fractal cmdline)
+target_link_libraries(fractal cmdline glfw glew_s)
 target_include_directories(fractal PUBLIC
-    lib/cmdline/source
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/cmdline/source
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/glm
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/glew/include
 )
