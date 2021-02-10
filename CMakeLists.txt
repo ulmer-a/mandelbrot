@@ -32,8 +32,6 @@ elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
 elseif("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
     add_compile_definitions(ENGINE_OS_MAC_OS=1)
 endif()
-
-
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
@@ -41,9 +39,22 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/lib/glew)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/lib/cmdline)
 
+set(RES_OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/resources.cpp)
+set(RES_TOOL "./tools/resources/rc")
+set(RES_INPUT ${CMAKE_CURRENT_SOURCE_DIR}/resources.txt)
+add_subdirectory(tools/resources)
+add_custom_target(res_obj ALL
+    DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/resources.txt"
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMAND ${RES_TOOL} -i ${RES_INPUT} -o ${RES_OUTPUT}
+)
+add_dependencies(res_obj rc)
+
 file(GLOB FRAC_HEADERS "src/*.h")
 file(GLOB FRAC_SOURCES "src/*.cpp")
-add_executable(fractal ${FRAC_HEADERS} ${FRAC_SOURCES})
+add_executable(fractal ${FRAC_HEADERS} ${FRAC_SOURCES} ${RES_OUTPUT})
+add_dependencies(fractal res_obj)
+
 
 target_compile_definitions(fractal PRIVATE
     $<$<CONFIG:Debug>:FRACTAL_DEBUG>
