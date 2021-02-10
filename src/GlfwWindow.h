@@ -14,6 +14,7 @@ static GLenum err;
     while((err = glGetError()) != GL_NO_ERROR){ \
         std::cout << __FILE__ ": " << __LINE__ << " (" << err << ")"; \
     } \
+    exit(1);
 
 class GlfwWindow
 {
