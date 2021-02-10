@@ -35,7 +35,12 @@ GlfwWindow::GlfwWindow(size_t width, size_t height,
     fprintf(stderr, "error: glew: %s\n", glewGetErrorString(err));
     exit(1);
   }
-  glError()
+  glError();
+
+  int fb_width, fb_height;
+  glfwGetFramebufferSize(m_window, &fb_width, &fb_height);
+  glViewport(0, 0, fb_width, fb_height);
+
 }
 
 GlfwWindow::~GlfwWindow()
@@ -59,6 +64,8 @@ void GlfwWindow::exec()
 {
   while (!glfwWindowShouldClose(m_window))
   {
+    glfwSwapBuffers(m_window);
+    glfwPollEvents();
     m_loopHandler();
   }
 }

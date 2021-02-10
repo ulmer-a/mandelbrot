@@ -27,12 +27,17 @@ int main(int argc, char* argv[])
   }
 
   FractalRenderer fractal;
-  GlfwWindow window(width, height, [&fractal]() {
+  auto mainLoop = [&fractal]() {
     fractal.draw();
-  });
+  };
+
+  // setup a window with OpenGL context
+  GlfwWindow window(width, height, mainLoop);
+
+  // setup fractal Renderer (fragment shader)
   fractal.setup();
-  glClearColor(1.0, 0.0, 0.0, 1.0);
-  glClear(GL_COLOR_BUFFER_BIT);
+
+  // run the program
   window.exec();
   return 0;
 }
