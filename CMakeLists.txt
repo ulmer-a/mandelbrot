@@ -47,7 +47,7 @@ add_custom_command(
     OUTPUT ${RES_OUTPUT}
     DEPENDS rc "${CMAKE_CURRENT_SOURCE_DIR}/resources.txt"
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMAND ${RES_TOOL} -i ${RES_INPUT} -o ${RES_OUTPUT}
+    COMMAND $<TARGET_FILE:rc> -i ${RES_INPUT} -o ${RES_OUTPUT}
 )
 
 file(GLOB FRAC_HEADERS "src/*.h")
