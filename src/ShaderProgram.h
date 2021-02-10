@@ -13,7 +13,7 @@ class ShaderProgram
     bool addFragmentShader(const char* source);
 
     bool link();
-    void activate();
+    bool activate();
 
     int getUniform(const std::string &uniform);
 

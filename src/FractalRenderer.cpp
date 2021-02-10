@@ -53,7 +53,8 @@ bool FractalRenderer::setup()
     return false;
   if (!m_shaderProgram->link())
     return false;
-  m_shaderProgram->activate();
+  if (!m_shaderProgram->activate())
+    return false;
 
   setupVertexBuffer();
   return true;

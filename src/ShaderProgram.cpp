@@ -1,6 +1,10 @@
 #include <GL/glew.h>
 #include <cassert>
 
+#ifdef WIN32
+#include <crtdbg.h>
+#endif
+
 #include "ShaderProgram.h"
 #include "ResourceManager.h"
 
@@ -79,7 +83,7 @@ bool ShaderProgram::link()
   return true;
 }
 
-void ShaderProgram::activate()
+bool ShaderProgram::activate()
 {
   glClearError();
   glUseProgram(m_shaderProgram);
@@ -87,9 +91,10 @@ void ShaderProgram::activate()
   while((err = glGetError()) != GL_NO_ERROR)
   {
     printf("error: glUseProgram() failed: %u\n", err);
-    assert(false && "shader program binding failed");
+    return false;
   }
   printf("binding shader program: id=%u\n", m_shaderProgram);
+  return true;
 }
 
 int ShaderProgram::getUniform(const std::string &uniform)
