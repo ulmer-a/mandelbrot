@@ -15,28 +15,22 @@ ShaderProgram::~ShaderProgram()
   glDeleteProgram(m_shaderProgram);
 }
 
-bool ShaderProgram::addVertexShader(const std::string &file)
+bool ShaderProgram::addVertexShader(const char* source)
 {
-  return addShader(GL_VERTEX_SHADER, file);
+  return addShader(GL_VERTEX_SHADER, source);
 }
 
-bool ShaderProgram::addFragmentShader(const std::string &file)
+bool ShaderProgram::addFragmentShader(const char* source)
 {
-  return addShader(GL_FRAGMENT_SHADER, file);
+  return addShader(GL_FRAGMENT_SHADER, source);
 }
 
-bool ShaderProgram::addShader(int type, const std::string& name)
+bool ShaderProgram::addShader(int type, const char* source)
 {
-  std::string shaderSource(ResourceManager::getInstance().getString(name));
-  const char* shaderSourcePtr = shaderSource.c_str();
-  if (shaderSource.size() < 1)
-  {
-    printf("error: %s: invalid shader source provided\n", name.c_str());
-    return false;
-  }
+  const char* shaderSourcePtr = source;
 
   unsigned int shaderId = glCreateShader(type);
-  printf("compiling shader: name=%s, id=%u\n", name.c_str(), shaderId);
+  printf("compiling shader: id=%u\n", shaderId);
   glShaderSource(shaderId, 1, &shaderSourcePtr, NULL);
   glCompileShader(shaderId);
 
@@ -49,8 +43,8 @@ bool ShaderProgram::addShader(int type, const std::string& name)
     glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &length);
     char* message = (char*)alloca(length);
     glGetShaderInfoLog(shaderId, 512, NULL, message);
-    printf("failed to compile shader '%s' (%u)\n%s\n",
-           name.c_str(), shaderId, message);
+    printf("failed to compile shader (%u)\n%s\n",
+           shaderId, message);
     return false;
     glDeleteShader(shaderId);
   }

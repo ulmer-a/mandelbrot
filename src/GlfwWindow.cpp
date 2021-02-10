@@ -45,19 +45,13 @@ GlfwWindow::GlfwWindow(size_t width, size_t height,
 
 GlfwWindow::~GlfwWindow()
 {
-  if (!m_closed)
-    close();
+  glfwDestroyWindow(m_window);
   destroy();
 }
 
 void GlfwWindow::bind()
 {
   glfwMakeContextCurrent(m_window);
-}
-
-void GlfwWindow::close()
-{
-  glfwDestroyWindow(m_window);
 }
 
 void GlfwWindow::exec()

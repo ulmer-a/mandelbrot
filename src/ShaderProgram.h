@@ -9,8 +9,8 @@ class ShaderProgram
     ShaderProgram();
     ~ShaderProgram();
 
-    bool addVertexShader(const std::string& file);
-    bool addFragmentShader(const std::string& file);
+    bool addVertexShader(const char* source);
+    bool addFragmentShader(const char* source);
 
     bool link();
     void activate();
@@ -18,7 +18,7 @@ class ShaderProgram
     int getUniform(const std::string &uniform);
 
   private:
-    bool addShader(int type, const std::string& name);
+    bool addShader(int type, const char* source);
 
   private:
     unsigned int m_shaderProgram;

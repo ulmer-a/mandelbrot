@@ -24,7 +24,6 @@ class GlfwWindow
     ~GlfwWindow();
 
     void bind();
-    void close();
     void exec();
 
   private:

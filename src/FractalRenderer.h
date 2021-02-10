@@ -14,6 +14,9 @@ class FractalRenderer
     void draw();
 
   private:
+    void setupVertexBuffer();
+
+  private:
     std::shared_ptr<ShaderProgram> m_shaderProgram;
 };
 

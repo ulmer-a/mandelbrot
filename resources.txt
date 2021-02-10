@@ -1,0 +1,2 @@
+shader/default.vert.glsl:shader_vertex_default
+shader/mandelbrot.frag.glsl:shader_fragment_mandelbrot
