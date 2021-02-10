@@ -1,13 +1,19 @@
 #pragma once
 
+#include <memory>
+
+#include "ShaderProgram.h"
 
 class FractalRenderer
 {
   public:
-    FractalRenderer();
+    FractalRenderer() = default;
 
-    void setup();
+    bool setup();
 
     void draw();
+
+  private:
+    std::shared_ptr<ShaderProgram> m_shaderProgram;
 };
 

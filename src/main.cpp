@@ -35,7 +35,11 @@ int main(int argc, char* argv[])
   GlfwWindow window(width, height, mainLoop);
 
   // setup fractal Renderer (fragment shader)
-  fractal.setup();
+  if (!fractal.setup())
+  {
+    printf("FractalRenderer setup failed\n");
+    return 1;
+  }
 
   // run the program
   window.exec();

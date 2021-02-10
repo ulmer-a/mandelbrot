@@ -1,20 +1,24 @@
-#include "FractalRenderer.h"
-#include "GlfwWindow.h"
-
 #include <GL/glew.h>
+
+#include "FractalRenderer.h"
+#include "ShaderProgram.h"
+#include "GlfwWindow.h"
 
 struct Vertex
 {
   float x, y, z;
 };
 
-FractalRenderer::FractalRenderer()
+bool FractalRenderer::setup()
 {
+  m_shaderProgram = std::make_shared<ShaderProgram>();
 
-}
+  if (!m_shaderProgram->addFragmentShader("mandelbrot.glsl"))
+    return false;
+  if (!m_shaderProgram->link())
+    return false;
+  m_shaderProgram->activate();
 
-void FractalRenderer::setup()
-{
   /*const static Vertex vertexBuffer[] = {
     { 0.5,  0.5, 0.0 },
     { -0.5, -0.5, 0.0 },
@@ -33,13 +37,15 @@ void FractalRenderer::setup()
   glError()
   glEnableVertexAttribArray(0);
   glError()*/
+
+  return true;
 }
 
 void FractalRenderer::draw()
 {
   glBegin(GL_TRIANGLES);
   glColor3f(0.1f, 0.2f, 0.8f);
-  glVertex3f(0, 0, 0);
+  glVertex3f(0.1, 0, 0);
   glVertex3f(1, 0, 0);
   glVertex3f(0, 1, 0);
   glEnd();
