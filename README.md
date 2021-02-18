@@ -1,5 +1,7 @@
 ## Cross platform Mandelbrot fractal Renderer (OpenGL)
 
+Current project status: incomplete
+
 ### Building
 
 Make sure to do a recursive clone, so that you get all the submodule
